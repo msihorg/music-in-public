@@ -20,18 +20,32 @@ A program, to provide charitable and educational assistance to musicians playing
 
 ## Model
 - users
-- musicians
-- bands
-- managers
-- venues
-- booking request
-- events
-- localities
-- regulations
+- musicians (students, hobby, professional)
+- bands (high school, college, hobby, professional)
+- managers (manage professional bands)
+- bookers (create and schedule events)
+- sponsors (donate to pay musicians)
+- venues (parks, other public places, private places (hotel lobby)
+- events (venue, date/time, duration)
+- localities (state, county, city, federal)
+- regulations (laws, rules, and permits)
 
 
 ## Use Cases
-
+- signup as a musician
+- sign up as a booker
+- sign up as a manager
+- sign up sponsors (pay for music)
+- musician creates a band and then invites other musicians into the band, other musicians accept the invite
+- booker creates a venue
+- booker creates an event by specifying a venue, start and end date/time
+- booker creates regulations for venue or locality
+- musician creates an event by specifying a venue, start and end date/time
+- manager can invite musician or band to be managed
+- musician can invite a manager to be their manager
+- sponsor can create an event
+- sponsor can sponsor an existing event
+- events can be reoccurring
 
 ## Project Plan
 
