@@ -37,6 +37,8 @@ A program, to provide charitable and educational assistance to musicians playing
 - sign up as a booker
 - sign up as a manager
 - sign up sponsors (pay for music)
+- password-less login (use email or sms to validate)
+- Create roles for Admin
 
 ### Schedule Music
 - musician creates profile: instrument and style ...
