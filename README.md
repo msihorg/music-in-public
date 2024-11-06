@@ -1,4 +1,4 @@
-# Music In Public Project
+# Music In Public Project www.musicinpublic.org
 A program, to provide charitable and educational assistance to musicians playing acoustic music in public spaces, of Make Sure It Happens Inc, a Maryland non-profit and 501(c)(3) EIN 85-3536160 | www.msih.org | ithappens@msih.org | 717-674-4674
 
 Use github [*Issues*](../../issues)  to track project and operational: Bugs, Features, and Tasks
