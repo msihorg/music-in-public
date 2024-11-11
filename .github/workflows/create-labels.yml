@@ -1,0 +1,88 @@
+name: Create Issue Labels
+
+on:
+  workflow_dispatch:  # Allows manual trigger
+  create:  # Runs when the repository is created
+  push:
+    paths:
+      - '.github/workflows/create-labels.yml'
+    branches:
+      - main
+      - master  # Including master as it's a common default branch name
+
+jobs:
+  create-labels:
+    # Only run this job on repository creation or manual trigger
+    if: github.event_name == 'create' || github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Create Labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = [
+              {
+                name: 'developer',
+                color: '0E8A16',
+                description: 'Tasks requiring development work'
+              },
+              {
+                name: 'design',
+                color: 'FF69B4',
+                description: 'Tasks involving design work'
+              },
+              {
+                name: 'marketing',
+                color: 'FFA500',
+                description: 'Marketing-related tasks'
+              },
+              {
+                name: 'project manager',
+                color: '1D76DB',
+                description: 'Tasks for project management'
+              },
+              {
+                name: 'operations',
+                color: '5319E7',
+                description: 'Operations-related tasks'
+              },
+              {
+                name: 'legal research',
+                color: 'FBCA04',
+                description: 'Tasks involving legal research'
+              }
+            ];
+
+            for (const label of labels) {
+              try {
+                // Try to create the label
+                await github.rest.issues.createLabel({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name,
+                  color: label.color,
+                  description: label.description
+                });
+                console.log(`Created label: ${label.name}`);
+              } catch (error) {
+                // If label already exists, update it
+                if (error.status === 422) {
+                  await github.rest.issues.updateLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    name: label.name,
+                    color: label.color,
+                    description: label.description
+                  });
+                  console.log(`Updated existing label: ${label.name}`);
+                } else {
+                  console.log(`Error processing label ${label.name}: ${error}`);
+                }
+              }
+            }
