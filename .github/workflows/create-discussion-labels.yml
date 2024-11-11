@@ -1,0 +1,74 @@
+name: Create Discussion Labels
+
+on:
+  workflow_dispatch:  # Allows manual trigger
+  create:  # Runs when the repository is created
+  push:
+    paths:
+      - '.github/workflows/create-discussion-labels.yml'
+    branches:
+      - main
+      - master  # Including master as it's a common default branch name
+
+jobs:
+  create-discussion-labels:
+    if: github.event_name == 'create' || github.event_name == 'workflow_dispatch' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      discussions: write
+      
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Create Discussion Labels
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const labels = [
+              {
+                name: 'Developer',
+                description: 'Topics requiring development expertise'
+              },
+              {
+                name: 'Design',
+                description: 'Design-related discussions'
+              },
+              {
+                name: 'Marketing',
+                description: 'Marketing strategy discussions'
+              },
+              {
+                name: 'Project Manager',
+                description: 'Project management topics'
+              },
+              {
+                name: 'Operations',
+                description: 'Operations-related discussions'
+              },
+              {
+                name: 'Legal Research',
+                description: 'Legal research and compliance topics'
+              }
+            ];
+
+            for (const label of labels) {
+              try {
+                // Create the discussion category/label
+                await github.rest.discussions.createCategory({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  name: label.name,
+                  description: label.description,
+                  format: 'discussion'  // Can be 'discussion' or 'announcement'
+                });
+                console.log(`Created discussion category: ${label.name}`);
+              } catch (error) {
+                if (error.status === 422) {
+                  console.log(`Category ${label.name} already exists`);
+                  // Note: GitHub API doesn't currently support updating existing discussion categories
+                } else {
+                  console.log(`Error processing category ${label.name}: ${error}`);
+                }
+              }
+            }
